@@ -2,7 +2,7 @@ import geopandas as gpd
 import pandas as pd
 import streamlit as st
 from folium.features import GeoJsonPopup, GeoJsonTooltip
-# import branca
+import branca
 
 from streamlit_folium import st_folium
 
@@ -17,12 +17,12 @@ def get_df() -> pd.DataFrame:
 
 df = get_df()
 
-# colormap = branca.colormap.LinearColormap(
-#     vmin=df["age"].quantile(0.0),
-#     vmax=df["age"].quantile(1),
-#     colors=["blue", 'mediumslateblue', "darkorchid",'mediumvioletred', "red"],
-#     caption="Age of Building",
-# )
+colormap = branca.colormap.LinearColormap(
+    vmin=df["age"].quantile(0.0),
+    vmax=df["age"].quantile(1),
+    colors=["blue", 'mediumslateblue', "darkorchid",'mediumvioletred', "red"],
+    caption="Age of Building",
+)
 
 m = folium.Map(location=[40.6602,-73.969749], zoom_start=12, tiles = "CartoDB positron")
 
@@ -55,23 +55,23 @@ tooltip = GeoJsonTooltip(
 
 folium.GeoJson(
     df,
-    # style_function=
-    # lambda x: {
-    #     "fillColor": colormap(x["properties"]["age"])
-    #     if x["properties"]["age"] is not None
-    #     else "transparent",
-    #     # "color": "black",
-    #     'color' : colormap(x["properties"]["age"])
-    #     if x["properties"]["age"] is not None
-    #     else "black",
-    #     # 'opacity':0.4,
-    #     "fillOpacity": 0.4,
-    # },
+    style_function=
+    lambda x: {
+        "fillColor": colormap(x["properties"]["age"])
+        if x["properties"]["age"] is not None
+        else "transparent",
+        # "color": "black",
+        'color' : colormap(x["properties"]["age"])
+        if x["properties"]["age"] is not None
+        else "black",
+        # 'opacity':0.4,
+        "fillOpacity": 0.4,
+    },
     tooltip=tooltip,
     popup=popup,
 ).add_to(m)
 
-# colormap.add_to(m)
+colormap.add_to(m)
 
 output = st_folium(m, width=700, height=500)
 
