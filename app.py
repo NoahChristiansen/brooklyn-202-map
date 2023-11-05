@@ -1,10 +1,8 @@
-import branca
-import folium
 import geopandas as gpd
 import pandas as pd
-import requests
 import streamlit as st
 from folium.features import GeoJsonPopup, GeoJsonTooltip
+import branca
 
 from streamlit_folium import st_folium
 
