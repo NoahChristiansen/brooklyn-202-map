@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 from folium.features import GeoJsonPopup, GeoJsonTooltip
 import branca
-
+import folium
 from streamlit_folium import st_folium
 
 st.write("# Brooklyn 202 Map")
