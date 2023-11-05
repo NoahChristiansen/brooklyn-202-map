@@ -26,13 +26,13 @@ colormap = branca.colormap.LinearColormap(
 
 m = folium.Map(location=[40.6602,-73.969749], zoom_start=12, tiles = "CartoDB positron")
 
-popup = GeoJsonPopup(
-    fields=['property_name_text', 'age','property_total_unit_count'],
-    aliases=['Property Name','Building Age', 'Total Units'],
-    localize=True,
-    labels=True,
-    style="background-color: yellow;",
-)
+# popup = GeoJsonPopup(
+#     fields=['property_name_text', 'age','property_total_unit_count'],
+#     aliases=['Property Name','Building Age', 'Total Units'],
+#     localize=True,
+#     labels=True,
+#     style="background-color: yellow;",
+# )
 
 tooltip = GeoJsonTooltip(
     fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
@@ -68,7 +68,7 @@ folium.GeoJson(
         "fillOpacity": 0.4,
     },
     tooltip=tooltip,
-    popup=popup,
+    # popup=popup,
 ).add_to(m)
 
 colormap.add_to(m)
