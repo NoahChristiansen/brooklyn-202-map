@@ -18,6 +18,7 @@ def get_df() -> pd.DataFrame:
 
 
 df = get_df()
+df.drop(columns = ['name', 'deal_name', 'email', 'master_servicer','built_code','Securitization Type'], inplace = True)
 
 colormap = branca.colormap.LinearColormap(
     vmin=df["age"].quantile(0.0),
