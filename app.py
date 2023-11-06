@@ -6,6 +6,8 @@ import branca
 import folium
 from streamlit_folium import st_folium
 
+st.set_page_config(layout = 'wide')
+
 st.write("# Brooklyn 202 Map")
 
 
@@ -77,7 +79,7 @@ folium.GeoJson(
 
 colormap.add_to(m)
 
-output = st_folium(m, width=800, height=500)
+output = st_folium(m, width=900, height=500)
 
 st.write('Currently Selected Property:')
 if output['last_active_drawing'] is not None:
