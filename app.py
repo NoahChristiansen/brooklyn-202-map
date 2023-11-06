@@ -72,7 +72,7 @@ folium.GeoJson(
         "fillOpacity": 0.4,
     },
     tooltip=tooltip,
-    # popup=popup,
+    popup=popup,
 ).add_to(m)
 
 colormap.add_to(m)
