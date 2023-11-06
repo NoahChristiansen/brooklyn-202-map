@@ -73,7 +73,7 @@ folium.GeoJson(
 
 colormap.add_to(m)
 
-output = st_folium(m, width=700, height=500)
+output = st_folium(m, width=1200, height=1000)
 
 st.write('Currently Selected Property:')
 if output['last_active_drawing'] is not None:
