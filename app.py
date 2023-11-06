@@ -26,13 +26,17 @@ colormap = branca.colormap.LinearColormap(
 
 m = folium.Map(location=[40.6602,-73.969749], zoom_start=12, tiles = "CartoDB positron")
 
-# popup = GeoJsonPopup(
-#     fields=['property_name_text', 'age','property_total_unit_count'],
-#     aliases=['Property Name','Building Age', 'Total Units'],
-#     localize=True,
-#     labels=True,
-#     style="background-color: yellow;",
-# )
+popup = GeoJsonPopup(
+    fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
+            'SPONSOR', 'Natural Gas Use (kBtu)', 'Electricity Use - Grid Purchase (kWh)','LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
+            'Site Energy Unit Intensity (EUI) (kBtu/sqft)'],
+    aliases=['Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
+            'Sponsor', 'Natural Gas Use (kBtu) ', 'Electricity Use - Grid Purchase (kWh) ','LL84 Total GHG Emissions (MTCO2e) ', 'Energy Star Score ',
+            'Site Energy Unit Intensity (EUI) (kBtu/sqft) '],
+    localize=True,
+    labels=True,
+    style="background-color: yellow;",
+)
 
 tooltip = GeoJsonTooltip(
     fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
@@ -73,7 +77,7 @@ folium.GeoJson(
 
 colormap.add_to(m)
 
-output = st_folium(m, width=1200, height=1000)
+output = st_folium(m, width=800, height=500)
 
 st.write('Currently Selected Property:')
 if output['last_active_drawing'] is not None:
