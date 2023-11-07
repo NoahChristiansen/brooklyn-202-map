@@ -14,16 +14,15 @@ st.write("# Brooklyn 202 Map")
 @st.cache_resource
 def get_df() -> pd.DataFrame:
     gdf = gpd.read_file('merged.geojson')
-    return gdf.drop(columns = ['lstmoddate'])
+    return gdf.drop(columns = ['lstmoddate','name', 'deal_name', 'email', 'master_servicer','built_code','Securitization Type'])
 
 
 df = get_df()
-df.drop(columns = ['name', 'deal_name', 'email', 'master_servicer','built_code','Securitization Type'], inplace = True)
 
 colormap = branca.colormap.LinearColormap(
     vmin=df["age"].quantile(0.0),
     vmax=df["age"].quantile(1),
-    colors=["blue", 'mediumslateblue', "darkorchid",'mediumvioletred', "red"],
+    colors=["blue", 'mediumslateblue', "m",'mediumvioletred', "red"],
     caption="Age of Building",
 )
 
@@ -80,10 +79,16 @@ folium.GeoJson(
 
 colormap.add_to(m)
 
-output = st_folium(m, width=900, height=500)
+output = st_folium(m, width=1200, height=500)
+
+import json
 
 st.write('Currently Selected Property:')
 if output['last_active_drawing'] is not None:
-    st.dataframe(output['last_active_drawing']['properties'],
-                 column_config = {'':'Column'},hide_index = True,
+    output_df = pd.DataFrame(data = output['last_active_drawing']['properties'], index=[0])
+    st.dataframe(output_df,
+                #  column_config = {'':'Column'},
+                 hide_index = True,
                  use_container_width = True)
+    with open("output.json", "w") as f:
+        json.dump(output, f)
