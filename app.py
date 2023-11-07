@@ -79,7 +79,7 @@ folium.GeoJson(
 
 colormap.add_to(m)
 
-output = st_folium(m, width=1200, height=800)
+output = st_folium(m, width=1200, height=700)
 
 import json
 
