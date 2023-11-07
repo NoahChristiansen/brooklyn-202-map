@@ -79,9 +79,7 @@ folium.GeoJson(
 
 colormap.add_to(m)
 
-output = st_folium(m, width=1200, height=700)
-
-import json
+output = st_folium(m, width=1200, height=600)
 
 st.write('Currently Selected Property:')
 if output['last_active_drawing'] is not None:
@@ -90,5 +88,3 @@ if output['last_active_drawing'] is not None:
                 #  column_config = {'':'Column'},
                  hide_index = True,
                  use_container_width = True)
-    with open("output.json", "w") as f:
-        json.dump(output, f)
