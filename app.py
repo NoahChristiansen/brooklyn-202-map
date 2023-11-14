@@ -10,81 +10,151 @@ st.set_page_config(layout = 'wide')
 
 st.write("# Brooklyn 202 Map")
 
-
 @st.cache_resource
 def get_df() -> pd.DataFrame:
-    gdf = gpd.read_file('merged.geojson')
-    return gdf.drop(columns = ['lstmoddate','name', 'deal_name', 'email', 'master_servicer','built_code','Securitization Type'])
-
+    gdf = gpd.read_file('bk-202s-final.geojson')
+    return gdf
 
 df = get_df()
 
-colormap = branca.colormap.LinearColormap(
-    vmin=df["age"].quantile(0.0),
-    vmax=df["age"].quantile(1),
-    colors=["blue", 'mediumslateblue', "m",'mediumvioletred', "red"],
-    caption="Age of Building",
-)
+columns_list = ['Property Name', 'property_name_text',
+                 'standardized_address',
+                 'BBL',
+                 'Community Board', 'Council District',
+                 'Borough', 'Neighborhood Tabulation Areas (NTA)',
+                 'owner_organization_name', 'Owner-Name 1','Owner-Name 2',
+                 'Owner-Mail Recipient Name','Owner-Portfolio Owner or Agent',
+                 'Owner-PLUTO','Owner-Corporation Name HDP',
+                 'mgmt_agent_org_name', 'mgmt_agent_main_phone_number',
+                 'owner_main_phone_number_text', 
+                 'property_category_name','primary_financing_type',
+                 'Occupancy', 'property_total_unit_count',
+                'Building Construction Year','cnstrct_yr','age',
+                'num_floors',
+                'Gross Floor Area (NYC DOF)', 'self_reported_gross_floor_area',
+                'Lien names',
+                'Excepted Building Category','Terms of Exception', 
+                'List of All Property Use Types at Property',
+                'Subject to Compliance Starting in 2024',
+                'Energy Grade',       
+                'Fuel Oil #1 Use (kBtu)', 'Fuel Oil #2 Use (kBtu)',
+                'Fuel Oil #4 Use (kBtu)', 'Fuel Oil #5 & 6 Use (kBtu)',
+                'Diesel #2 Use (kBtu)', 'Propane Use (kBtu)', 'Kerosene Use (kBtu)',
+                'Natural Gas Use (therms)', 'Natural Gas Use (kBtu)',
+                'District Steam Use (kBtu)', 'district_chilledwater_use',
+                'Electricity Use - Grid Purchase (kWh)',
+                'LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft)',
+                'LL84 Direct GHG Emissions (MTCO2e)',
+                'LL84 Indirect GHG Emissions (MTCO2e)',
+                'LL97 Total Carbon Emission Threshold 2024_2029',
+                'LL97 Total Carbon Emission Threshold 2030_2034',
+                'LL97 Total Carbon Emissions (MTCO2e)',
+                'LL97 Excess Emissions 2024-2029 (MTCO2e)',
+                'LL97 Excess Emissions 2030-2034 (MTCO2e)',
+                'LL97 Penalties 2024-2029 (USD)', 'LL97 Penalties 2030-2035 (USD)',
+                'geometry']
 
-m = folium.Map(location=[40.6602,-73.969749], zoom_start=12, tiles = "CartoDB positron")
+col1, col2 = st.columns([0.6, 0.4])
 
-popup = GeoJsonPopup(
-    fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
-            'SPONSOR', 'Natural Gas Use (kBtu)', 'Electricity Use - Grid Purchase (kWh)','LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
-            'Site Energy Unit Intensity (EUI) (kBtu/sqft)'],
-    aliases=['Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
-            'Sponsor', 'Natural Gas Use (kBtu) ', 'Electricity Use - Grid Purchase (kWh) ','LL84 Total GHG Emissions (MTCO2e) ', 'Energy Star Score ',
-            'Site Energy Unit Intensity (EUI) (kBtu/sqft) '],
-    localize=True,
-    labels=True,
-    style="background-color: yellow;",
-)
+with col1:
+    colormap = branca.colormap.LinearColormap(
+        vmin=df["age"].quantile(0.0),
+        vmax=df["age"].quantile(1),
+        colors=["blue", 'mediumslateblue', "m",'mediumvioletred', "red"],
+        caption="Age of Building",
+    )
 
-tooltip = GeoJsonTooltip(
-    fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
-            'SPONSOR', 'Natural Gas Use (kBtu)', 'Electricity Use - Grid Purchase (kWh)','LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
-            'Site Energy Unit Intensity (EUI) (kBtu/sqft)'],
-    aliases=['Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
-            'Sponsor', 'Natural Gas Use (kBtu) ', 'Electricity Use - Grid Purchase (kWh) ','LL84 Total GHG Emissions (MTCO2e) ', 'Energy Star Score ',
-            'Site Energy Unit Intensity (EUI) (kBtu/sqft) '],
-    localize=True,
-    sticky=False,
-    labels=True,
-    style="""
-        background-color: #F0EFEF;
-        border: 2px solid black;
-        border-radius: 3px;
-        box-shadow: 3px;
-    """,
-    max_width=800,
-)
+    m = folium.Map(location=[40.6602,-73.969749], zoom_start=12, tiles = "CartoDB positron")
 
-folium.GeoJson(
-    df,
-    style_function=
-    lambda x: {
-        "fillColor": colormap(x["properties"]["age"])
-        if x["properties"]["age"] is not None
-        else "transparent",
-        # "color": "black",
-        'color' : colormap(x["properties"]["age"])
-        if x["properties"]["age"] is not None
-        else "black",
-        # 'opacity':0.4,
-        "fillOpacity": 0.4,
-    },
-    tooltip=tooltip,
-    popup=popup,
-).add_to(m)
+    popup = GeoJsonPopup(
+        fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
+                'Natural Gas Use (kBtu)', 'Electricity Use - Grid Purchase (kWh)','LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft)'],
+        aliases=['Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
+                'Natural Gas Use (kBtu) ', 'Electricity Use - Grid Purchase (kWh) ','LL84 Total GHG Emissions (MTCO2e) ', 'Energy Star Score ',
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft) '],
+        localize=True,
+        labels=True,
+        style="background-color: yellow;",
+    )
 
-colormap.add_to(m)
+    tooltip = GeoJsonTooltip(
+        fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
+                'Natural Gas Use (kBtu)', 'Electricity Use - Grid Purchase (kWh)','LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft)'],
+        aliases=['Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
+                'Natural Gas Use (kBtu) ', 'Electricity Use - Grid Purchase (kWh) ','LL84 Total GHG Emissions (MTCO2e) ', 'Energy Star Score ',
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft) '],
+        localize=True,
+        sticky=False,
+        labels=True,
+        style="""
+            background-color: #F0EFEF;
+            border: 2px solid black;
+            border-radius: 3px;
+            box-shadow: 3px;
+        """,
+        max_width=800,
+    )
 
-output = st_folium(m, width=1200, height=600)
+    folium.GeoJson(
+        df,
+        style_function=
+        lambda x: {
+            "fillColor": colormap(x["properties"]["age"])
+            if x["properties"]["age"] is not None
+            else "transparent",
+            # "color": "black",
+            'color' : colormap(x["properties"]["age"])
+            if x["properties"]["age"] is not None
+            else "black",
+            # 'opacity':0.4,
+            "fillOpacity": 0.4,
+        },
+        tooltip=tooltip,
+        popup=popup,
+    ).add_to(m)
 
-st.write('Currently Selected Property:')
+    colormap.add_to(m)
+
+    output = st_folium(m, width=900, height=600)
+
+with col2:
+    st.write('All Building Data')
+    st.dataframe(df.drop(columns = ['geometry']), height = 550)
+    
+    # st.dataframe(df, hide_index = True, use_container_width = True)
+
 if output['last_active_drawing'] is not None:
-    output_df = pd.DataFrame(data = output['last_active_drawing']['properties'], index=[0])
-    st.dataframe(output_df,
+    st.write('Currently Selected Property:')
+    output_df = pd.DataFrame(data = output['last_active_drawing']['properties'],
+                                index=[0])
+    st.dataframe(output_df[df.drop(columns = ['geometry']).columns],
+
                 #  column_config = {'':'Column'},
-                 hide_index = True,
-                 use_container_width = True)
+                hide_index = True,
+                use_container_width = True)
+
+energy_columns = ['Electricity Use - Grid Purchase (kWh)',
+                'Fuel Oil #1 Use (kBtu)', 'Fuel Oil #2 Use (kBtu)',
+                'Fuel Oil #4 Use (kBtu)', 'Fuel Oil #5 & 6 Use (kBtu)',
+                'Diesel #2 Use (kBtu)', 'Propane Use (kBtu)', 'Kerosene Use (kBtu)',
+                'Natural Gas Use (therms)', 'Natural Gas Use (kBtu)',
+                'District Steam Use (kBtu)', 'district_chilledwater_use',
+                'LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft)',
+                'LL84 Direct GHG Emissions (MTCO2e)',
+                'LL84 Indirect GHG Emissions (MTCO2e)',
+                'LL97 Total Carbon Emission Threshold 2024_2029',
+                'LL97 Total Carbon Emission Threshold 2030_2034',
+                'LL97 Total Carbon Emissions (MTCO2e)',
+                'LL97 Excess Emissions 2024-2029 (MTCO2e)',
+                'LL97 Excess Emissions 2030-2034 (MTCO2e)']
+
+
+metrics = st.selectbox('Select Column to Plot: ',
+                            energy_columns,
+                            index = 0)
+if metrics is not None:
+    st.bar_chart(df, x = 'property_name_text', y = metrics )
