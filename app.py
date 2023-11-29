@@ -12,13 +12,14 @@ st.write("# Brooklyn 202 Map")
 
 @st.cache_resource
 def get_df() -> pd.DataFrame:
-    gdf = gpd.read_file('bk-202s-final.geojson')
+    gdf = gpd.read_file('bk-202s-final-hr.geojson')
     return gdf
 
 df = get_df()
 
 columns_list = ['Property Name', 'property_name_text',
                  'standardized_address',
+                 'High Risk?',
                  'BBL',
                  'Community Board', 'Council District',
                  'Borough', 'Neighborhood Tabulation Areas (NTA)',
@@ -70,10 +71,10 @@ with col1:
     popup = GeoJsonPopup(
         fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
                 'Natural Gas Use (kBtu)', 'Electricity Use - Grid Purchase (kWh)','LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
-                'Site Energy Unit Intensity (EUI) (kBtu/sqft)'],
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft)', 'High Risk?'],
         aliases=['Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
                 'Natural Gas Use (kBtu) ', 'Electricity Use - Grid Purchase (kWh) ','LL84 Total GHG Emissions (MTCO2e) ', 'Energy Star Score ',
-                'Site Energy Unit Intensity (EUI) (kBtu/sqft) '],
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft) ', 'High Risk?'],
         localize=True,
         labels=True,
         style="background-color: yellow;",
@@ -82,10 +83,10 @@ with col1:
     tooltip = GeoJsonTooltip(
         fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
                 'Natural Gas Use (kBtu)', 'Electricity Use - Grid Purchase (kWh)','LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
-                'Site Energy Unit Intensity (EUI) (kBtu/sqft)'],
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft)', 'High Risk?'],
         aliases=['Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
                 'Natural Gas Use (kBtu) ', 'Electricity Use - Grid Purchase (kWh) ','LL84 Total GHG Emissions (MTCO2e) ', 'Energy Star Score ',
-                'Site Energy Unit Intensity (EUI) (kBtu/sqft) '],
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft) ', 'High Risk? '],
         localize=True,
         sticky=False,
         labels=True,
