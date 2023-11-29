@@ -9,6 +9,7 @@ from streamlit_folium import st_folium
 st.set_page_config(layout = 'wide')
 
 st.write("# Brooklyn 202 Map")
+st.write('* HUD Distressed properties outlined in green')
 
 @st.cache_resource
 def get_df() -> pd.DataFrame:
@@ -107,11 +108,12 @@ with col1:
             if x["properties"]["age"] is not None
             else "transparent",
             # "color": "black",
-            'color' : colormap(x["properties"]["age"])
-            if x["properties"]["age"] is not None
-            else "black",
+            'color': 'limegreen' if x["properties"]["HUD Distressed?"] == 'Yes' else (colormap(x["properties"]["age"]) if x["properties"]["age"] is not None else "black"),
+            # 'color' : colormap(x["properties"]["age"]) if x["properties"]["age"] is not None else "black",
             # 'opacity':0.4,
-            "fillOpacity": 0.4,
+            # 'weight': 3 if x["properties"]["HUD Distressed?"] == 'Yes' else 3,
+            "opacity": 0.7 if x["properties"]["HUD Distressed?"] == 'Yes' else 1,
+            "fillOpacity": 1 if x["properties"]["HUD Distressed?"] == 'Yes' else 0.7,
         },
         tooltip=tooltip,
         popup=popup,
