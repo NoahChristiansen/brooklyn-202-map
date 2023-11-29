@@ -19,7 +19,7 @@ df = get_df()
 
 columns_list = ['Property Name', 'property_name_text',
                  'standardized_address',
-                 'High Risk?',
+                 'HUD Distressed?',
                  'BBL',
                  'Community Board', 'Council District',
                  'Borough', 'Neighborhood Tabulation Areas (NTA)',
@@ -69,24 +69,24 @@ with col1:
     m = folium.Map(location=[40.6602,-73.969749], zoom_start=12, tiles = "CartoDB positron")
 
     popup = GeoJsonPopup(
-        fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
+        fields=['standardized_address','property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
                 'Natural Gas Use (kBtu)', 'Electricity Use - Grid Purchase (kWh)','LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
-                'Site Energy Unit Intensity (EUI) (kBtu/sqft)', 'High Risk?'],
-        aliases=['Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft)', 'HUD Distressed?'],
+        aliases=['Address','Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
                 'Natural Gas Use (kBtu) ', 'Electricity Use - Grid Purchase (kWh) ','LL84 Total GHG Emissions (MTCO2e) ', 'Energy Star Score ',
-                'Site Energy Unit Intensity (EUI) (kBtu/sqft) ', 'High Risk?'],
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft) ', 'HUD Distressed?'],
         localize=True,
         labels=True,
         style="background-color: yellow;",
     )
 
     tooltip = GeoJsonTooltip(
-        fields=['property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
+        fields=['standardized_address','property_name_text', 'age','property_total_unit_count', 'owner_organization_name',
                 'Natural Gas Use (kBtu)', 'Electricity Use - Grid Purchase (kWh)','LL84 Total GHG Emissions (MTCO2e)', 'Energy Star Score',
-                'Site Energy Unit Intensity (EUI) (kBtu/sqft)', 'High Risk?'],
-        aliases=['Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft)', 'HUD Distressed?'],
+        aliases=['Address','Property Name','Building Age', 'Total Unit Count ', 'Owner Organization ',
                 'Natural Gas Use (kBtu) ', 'Electricity Use - Grid Purchase (kWh) ','LL84 Total GHG Emissions (MTCO2e) ', 'Energy Star Score ',
-                'Site Energy Unit Intensity (EUI) (kBtu/sqft) ', 'High Risk? '],
+                'Site Energy Unit Intensity (EUI) (kBtu/sqft) ', 'HUD Distressed? '],
         localize=True,
         sticky=False,
         labels=True,
